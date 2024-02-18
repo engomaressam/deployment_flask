@@ -65,6 +65,14 @@ def index():
         # Render the form template if no data has been submitted
         return render_template('form.html')
 
+import os
+from threading import Timer
+import webbrowser
+
+def open_browser():
+    if not os.environ.get("WERKZEUG_RUN_MAIN"):
+        webbrowser.open_new('http://127.0.0.1:8080/')
+
 if __name__ == '__main__':
     # Run the Flask app
     app.run(debug=False, host='0.0.0.0', port=int(os.environ.get('PORT', 8080)))
