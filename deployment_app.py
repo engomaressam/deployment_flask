@@ -28,7 +28,7 @@ def index():
 
         # Define the pattern for increasing and decreasing counts
         increasing_pattern = list(range(middle_month_index))
-        decreasing_pattern = list(range(middle_month_index, 0, -1))
+        decreasing_pattern = list(range(middle_month_index, -1, -1))  # Modified to include 0
 
         # Calculate the number of people for each job in each month
         for job in sorted(average_job_counts_by_type['Job']):
@@ -55,6 +55,9 @@ def index():
 
             # Add counts to the deployment plan DataFrame
             deployment_plan[job] = counts
+
+        # Convert the 'Month' column to the desired format
+        deployment_plan['Month'] = deployment_plan['Month'].dt.strftime('%b-%y')
 
         # Transpose the DataFrame to swap rows and columns
         deployment_plan_transposed = deployment_plan.set_index('Month').T
