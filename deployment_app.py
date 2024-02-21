@@ -13,6 +13,9 @@ def index():
         project_type = request.form['project_type']
         duration = int(request.form['duration'])
 
+        # Filter the average job counts by the selected project type
+        average_job_counts_filtered = average_job_counts_by_type[average_job_counts_by_type['Type'] == project_type]
+
         # Determine the start month (Mar-24) and end month based on the duration
         start_month = pd.to_datetime('2024-03-01')
         end_month = start_month + pd.DateOffset(months=duration - 1)
@@ -31,13 +34,13 @@ def index():
         decreasing_pattern = list(range(middle_month_index, -1, -1))  # Modified to include 0
 
         # Calculate the number of people for each job in each month
-        for job in sorted(average_job_counts_by_type['Job']):
+        for job in sorted(average_job_counts_filtered['Job']):
             # Handle the special case for "Project Manager"
             if job == "Project Manager":
                 counts = [1] * len(deployment_plan)
             else:
                 # Calculate the average count for the job
-                avg_count = average_job_counts_by_type.loc[average_job_counts_by_type['Job'] == job, 'Average Count'].iloc[0]
+                avg_count = average_job_counts_filtered.loc[average_job_counts_filtered['Job'] == job, 'Average Count'].iloc[0]
 
                 # Initialize counts list for the job
                 counts = []
